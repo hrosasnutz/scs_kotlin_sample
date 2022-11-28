@@ -4,6 +4,9 @@ spring:
       kafka:
         binder:
           brokers: kafka:9291
+          
+server:
+  port: 8000
 
 logging:
   level:
