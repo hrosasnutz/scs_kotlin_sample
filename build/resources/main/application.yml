@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: scs_kotlin_sample
+  config:
+    import: "optional:configserver:${CONFIG_SERVER_URL:}"
+  cloud:
+    function:
+      definition: logText;logUser;unlockUser;logUserUnlocked;logObject
+    stream:
+      output-bindings: text;user;object
+      bindings:
+        text-out-0:
+          destination: io.spring.scs_kotlin_sample.texts
+          content-type: text/plain
+        logText-in-0:
+          destination: io.spring.scs_kotlin_sample.texts
+          content-type: text/plain
+        user-out-0:
+          destination: io.spring.scs_kotlin_sample.users
+        logUser-in-0:
+          destination: io.spring.scs_kotlin_sample.users
+        unlockUser-in-0:
+          destination: io.spring.scs_kotlin_sample.users
+        unlockUser-out-0:
+          destination: io.spring.scs_kotlin_sample.users_unlocked
+        logUserUnlocked-in-0:
+          destination: io.spring.scs_kotlin_sample.users_unlocked
+        object-out-0:
+          destination: io.spring.scs_kotlin_sample.objects
+        logObject-in-0:
+          destination: io.spring.scs_kotlin_sample.objects

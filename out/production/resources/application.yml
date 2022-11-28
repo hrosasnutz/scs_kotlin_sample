@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: scs_kotlin_sample
+  config:
+    import: "optional:configserver:${CONFIG_SERVER_URL:}"
+  cloud:
+    function:
+      definition: logText
+    stream:
+      output-bindings: text
+      bindings:
+        text-out-0:
+          destination: io.spring.scs_kotlin_sample.texts
+          content-type: text/plain
+        logText-in-0:
+          destination: io.spring.scs_kotlin_sample.texts
+          content-type: text/plain
