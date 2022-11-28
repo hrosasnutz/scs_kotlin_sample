@@ -1,5 +1,6 @@
 package io.spring.scs_kotlin_sample.listener
 
+import io.spring.scs_kotlin_sample.data.Employee
 import io.spring.scs_kotlin_sample.dto.objb.ObjectB
 import io.spring.scs_kotlin_sample.dto.UserDto
 import mu.KotlinLogging
@@ -67,6 +68,13 @@ class KafkaListener {
             flux -> flux
                 .doOnNext { logger.info { "logging object: $it" } }
                 .then()
+        }
+    }
+    
+    @Bean
+    fun logEmployee(): (Employee) -> Unit {
+        return {
+            logger.info { "logging employee: $it" }
         }
     }
 }

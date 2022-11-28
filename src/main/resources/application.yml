@@ -5,9 +5,9 @@ spring:
     import: "optional:configserver:${CONFIG_SERVER_URL:}"
   cloud:
     function:
-      definition: logText;logUser;unlockUser;logUserUnlocked;logObject
+      definition: logText;logUser;unlockUser;logUserUnlocked;logObject;logEmployee
     stream:
-      output-bindings: text;user;object
+      output-bindings: text;user;object;employee
       bindings:
         text-out-0:
           destination: io.spring.scs_kotlin_sample.texts
@@ -15,17 +15,34 @@ spring:
         logText-in-0:
           destination: io.spring.scs_kotlin_sample.texts
           content-type: text/plain
+          group: loggers
         user-out-0:
           destination: io.spring.scs_kotlin_sample.users
         logUser-in-0:
           destination: io.spring.scs_kotlin_sample.users
+          group: loggers
         unlockUser-in-0:
           destination: io.spring.scs_kotlin_sample.users
+          group: unlocks
         unlockUser-out-0:
           destination: io.spring.scs_kotlin_sample.users_unlocked
         logUserUnlocked-in-0:
           destination: io.spring.scs_kotlin_sample.users_unlocked
+          group: loggers
         object-out-0:
           destination: io.spring.scs_kotlin_sample.objects
         logObject-in-0:
           destination: io.spring.scs_kotlin_sample.objects
+          group: loggers
+        employee-out-0:
+          destination: io.spring.scs_kotlin_sample.employees
+        logEmployee-in-0:
+          destination: io.spring.scs_kotlin_sample.employees
+          group: loggers
+      kafka:
+        binder:
+          auto-create-topics: true
+          auto-alter-topics: true
+          auto-add-partitions: true
+          min-partition-count: 2
+          replication-factor: 1
