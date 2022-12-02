@@ -1,5 +1,6 @@
 package io.spring.scs_kotlin_sample.api
 
+import io.spring.scs_kotlin_sample.dto.ErrorDto
 import io.spring.scs_kotlin_sample.dto.obja.ObjectA
 import io.spring.scs_kotlin_sample.dto.TextDto
 import io.spring.scs_kotlin_sample.dto.UserDto

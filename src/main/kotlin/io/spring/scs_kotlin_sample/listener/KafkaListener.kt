@@ -1,13 +1,15 @@
 package io.spring.scs_kotlin_sample.listener
 
 import io.spring.scs_kotlin_sample.data.Employee
-import io.spring.scs_kotlin_sample.dto.objb.ObjectB
+import io.spring.scs_kotlin_sample.dto.ErrorDto
 import io.spring.scs_kotlin_sample.dto.UserDto
+import io.spring.scs_kotlin_sample.dto.objb.ObjectB
 import io.spring.scs_kotlin_sample.service.UserService
 import mu.KotlinLogging
 import org.springframework.context.annotation.Bean
 import org.springframework.kafka.support.KafkaHeaders
 import org.springframework.messaging.Message
+import org.springframework.messaging.support.ErrorMessage
 import org.springframework.messaging.support.MessageBuilder
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Flux

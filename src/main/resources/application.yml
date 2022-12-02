@@ -5,9 +5,9 @@ spring:
     import: "optional:configserver:${CONFIG_SERVER_URL:}"
   cloud:
     function:
-      definition: logText;logUser;unlockUser;logUserUnlocked;logObject;logEmployee
+      definition: logText;logUser;unlockUser;logUserUnlocked;logObject;logEmployee;customThrowException;generalThrowException;customDlqThrowException;customDlqExceptionHandler;generalDlqThrowException;generalDlqExceptionHandler
     stream:
-      output-bindings: text;user;object;employee
+      output-bindings: text;user;object;employee;customException;generalException;customDlqException;generalDlqException
       bindings:
         text-out-0:
           destination: io.spring.scs_kotlin_sample.texts
@@ -39,7 +39,45 @@ spring:
         logEmployee-in-0:
           destination: io.spring.scs_kotlin_sample.employees
           group: loggers
+        customException-out-0:
+          destination: io.spring.scs_kotlin_sample.custom.exceptions
+        customThrowException-in-0:
+          destination: io.spring.scs_kotlin_sample.custom.exceptions
+          group: throwers
+          error-handler-definition: customExceptionHandler
+        generalException-out-0:
+          destination: io.spring.scs_kotlin_sample.general.exceptions
+        generalThrowException-in-0:
+          destination: io.spring.scs_kotlin_sample.general.exceptions
+          group: throwers
+        customDlqException-out-0:
+          destination: io.spring.scs_kotlin_sample.dlq.exceptions
+        customDlqThrowException-in-0:
+          destination: io.spring.scs_kotlin_sample.dlq.exceptions
+          group: throwers
+        customDlqExceptionHandler-in-0:
+          #topic=error.<original_destination>.<group>
+          destination: error.io.spring.scs_kotlin_sample.dlq.exceptions.throwers
+          group: handlers
+        generalDlqException-out-0:
+          destination: io.spring.scs_kotlin_sample.dlq.custom.exceptions
+        generalDlqThrowException-in-0:
+          destination: io.spring.scs_kotlin_sample.dlq.custom.exceptions
+          group: throwers
+        generalDlqExceptionHandler-in-0:
+          destination: io.spring.dlq
+          group: handlers
+      default:
+        error-handler-definition: generalExceptionHandler
       kafka:
+        bindings:
+          customDlqThrowException-in-0:
+            consumer:
+              enable-dlq: true
+          generalDlqThrowException-in-0:
+            consumer:
+              enable-dlq: true
+              dlq-name: io.spring.dlq
         binder:
           auto-create-topics: true
           auto-alter-topics: true
