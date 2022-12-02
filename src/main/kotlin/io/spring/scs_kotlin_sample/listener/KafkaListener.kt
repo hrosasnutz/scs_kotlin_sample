@@ -3,6 +3,7 @@ package io.spring.scs_kotlin_sample.listener
 import io.spring.scs_kotlin_sample.data.Employee
 import io.spring.scs_kotlin_sample.dto.objb.ObjectB
 import io.spring.scs_kotlin_sample.dto.UserDto
+import io.spring.scs_kotlin_sample.service.UserService
 import mu.KotlinLogging
 import org.springframework.context.annotation.Bean
 import org.springframework.kafka.support.KafkaHeaders
@@ -13,7 +14,9 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @Component
-class KafkaListener {
+class KafkaListener(
+    private val userService: UserService
+) {
     
     private val logger = KotlinLogging.logger {  }
     
@@ -34,21 +37,10 @@ class KafkaListener {
     @Bean
     fun unlockUser(): (Message<UserDto>) -> (Message<UserDto>) {
         return {
-            if(it.payload.isLocked) {
-                val user = UserDto(
-                    it.payload.uuid,
-                    it.payload.username,
-                    it.payload.scope,
-                    false,
-                    it.payload.age,
-                    it.payload.createdAt
-                )
-                MessageBuilder.withPayload(user)
-                    .setHeader(KafkaHeaders.MESSAGE_KEY, user.uuid.toString().toByteArray())
-                    .build()
-            } else {
-                it
-            }
+            val user = userService.unlock(it.payload)
+            MessageBuilder.withPayload(user)
+                .setHeader(KafkaHeaders.MESSAGE_KEY, user.uuid.toString().toByteArray())
+                .build()
         }
     }
     
