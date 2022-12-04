@@ -51,21 +51,21 @@ spring:
           destination: io.spring.scs_kotlin_sample.general.exceptions
           group: throwers
         customDlqException-out-0:
-          destination: io.spring.scs_kotlin_sample.dlq.exceptions
+          destination: io.spring.scs_kotlin_sample.dlq.custom.exceptions
         customDlqThrowException-in-0:
-          destination: io.spring.scs_kotlin_sample.dlq.exceptions
+          destination: io.spring.scs_kotlin_sample.dlq.custom.exceptions
           group: throwers
         customDlqExceptionHandler-in-0:
           #topic=error.<original_destination>.<group>
-          destination: error.io.spring.scs_kotlin_sample.dlq.exceptions.throwers
+          destination: error.io.spring.scs_kotlin_sample.dlq.custom.exceptions.throwers
           group: handlers
         generalDlqException-out-0:
-          destination: io.spring.scs_kotlin_sample.dlq.custom.exceptions
+          destination: io.spring.scs_kotlin_sample.dlq.general.exceptions
         generalDlqThrowException-in-0:
-          destination: io.spring.scs_kotlin_sample.dlq.custom.exceptions
+          destination: io.spring.scs_kotlin_sample.dlq.general.exceptions
           group: throwers
         generalDlqExceptionHandler-in-0:
-          destination: io.spring.dlq
+          destination: io.spring.dlq.exceptions
           group: handlers
       default:
         error-handler-definition: generalExceptionHandler
@@ -77,7 +77,7 @@ spring:
           generalDlqThrowException-in-0:
             consumer:
               enable-dlq: true
-              dlq-name: io.spring.dlq
+              dlq-name: io.spring.dlq.exceptions
         binder:
           auto-create-topics: true
           auto-alter-topics: true

@@ -3,6 +3,7 @@ package io.spring.scs_kotlin_sample.util
 import io.github.serpro69.kfaker.Faker
 import io.spring.scs_kotlin_sample.data.Employee
 import io.spring.scs_kotlin_sample.data.Type
+import io.spring.scs_kotlin_sample.dto.ErrorDto
 import io.spring.scs_kotlin_sample.dto.TextDto
 import io.spring.scs_kotlin_sample.dto.UserDto
 import io.spring.scs_kotlin_sample.dto.enum.Action
@@ -14,7 +15,15 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 object Factories {
+    
     private val faker = Faker()
+    
+    fun getErrorDto(
+        uuid: UUID = UUID.randomUUID(),
+        message: String = faker.lorem.words()
+    ): ErrorDto {
+        return ErrorDto(uuid, message)
+    }
     
     fun getTextDto(): TextDto {
         return TextDto(faker.lorem.words())
